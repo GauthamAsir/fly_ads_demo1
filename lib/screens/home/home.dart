@@ -186,32 +186,26 @@ class HomeScreen extends StatelessWidget {
               mobile: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      'With the Right Software, Great Things Can Happen',
-                      maxLines: 10,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4!
-                          .copyWith(fontWeight: FontWeight.w500, color: Colors.black,
-                          overflow: TextOverflow.ellipsis),
-                    ),
+                  Text(
+                    'With the Right Software, Great Things Can Happen',
+                    maxLines: 10,
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        overflow: TextOverflow.ellipsis),
                   ),
-                  const SizedBox(height: 20,),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Flexible(
-                      child: Text(
-                        sampleShortText,
-                        maxLines: 10,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2!
-                            .copyWith(fontWeight: FontWeight.w500, color: Colors.black,
-                            overflow: TextOverflow.ellipsis, letterSpacing: 1.5, height: 1.5),
-                      ),
-                    ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    sampleShortText,
+                    maxLines: 10,
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        overflow: TextOverflow.ellipsis,
+                        letterSpacing: 1.5,
+                        height: 1.5),
                   )
                 ],
               ),
