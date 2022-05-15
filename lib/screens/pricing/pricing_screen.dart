@@ -116,7 +116,7 @@ class PricingScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: ListView.builder(
                 itemCount: membershipList.length,
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) => priceCard(context, index),
@@ -142,19 +142,21 @@ class PricingScreen extends StatelessWidget {
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(12))),
         child: SingleChildScrollView(
-
+          physics: const NeverScrollableScrollPhysics(),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 38),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 38),
                 decoration: BoxDecoration(
                     color: appPrimaryColor,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12))),
                 child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -163,7 +165,8 @@ class PricingScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20, overflow: TextOverflow.ellipsis),
+                            fontSize: 20,
+                            overflow: TextOverflow.ellipsis),
                       ),
                       const SizedBox(
                         height: 20,
@@ -175,16 +178,16 @@ class PricingScreen extends StatelessWidget {
                           Text(
                             '\$ ',
                             style: Theme.of(context).textTheme.headline6!.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis
-                                ),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis
+                            ),
                           ),
                           Text(
                             membershipModel.price.toStringAsFixed(2),
                             style: Theme.of(context).textTheme.headline3!.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis
-                                ),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis
+                            ),
                           ),
                         ],
                       ),
@@ -222,15 +225,15 @@ class PricingScreen extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(vertical: 24),
                                 shape: const RoundedRectangleBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(8)))),
+                                    BorderRadius.all(Radius.circular(8)))),
                             child: Text(
                               'Get Started',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline6!
                                   .copyWith(
-                                      color: Colors.white, overflow: TextOverflow.ellipsis,
-                                      fontWeight: FontWeight.w600),
+                                  color: Colors.white, overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.w600),
                             )),
                       ),
                     ],

@@ -82,7 +82,9 @@ class _DashboardState extends State<Dashboard> {
             Expanded(
                 flex: 7,
                 child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
+                  physics: _currentIndex == 1 && Responsive.isMobile(context)
+                      ? const NeverScrollableScrollPhysics()
+                      : const BouncingScrollPhysics(),
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 250),
                     child: getCurrentScreen(),
@@ -95,7 +97,6 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget getCurrentScreen() {
-
     switch (_currentIndex) {
       case 0:
         return const HomeScreen(
