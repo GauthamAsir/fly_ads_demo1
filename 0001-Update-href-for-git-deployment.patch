@@ -1,0 +1,26 @@
+From dd565daef13915e096c610890164bea98e271c76 Mon Sep 17 00:00:00 2001
+From: Gautham <gauthamnadar12@gmail.com>
+Date: Sun, 15 May 2022 14:36:17 +0530
+Subject: [PATCH 1/1] Update href for git deployment
+
+Signed-off-by: Gautham <gauthamnadar12@gmail.com>
+---
+ web/index.html | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/web/index.html b/web/index.html
+index 3b654a3..b9ec2fa 100644
+--- a/web/index.html
++++ b/web/index.html
+@@ -14,7 +14,7 @@
+       This is a placeholder for base href that will be replaced by the value of
+       the `--base-href` argument provided to `flutter build`.
+     -->
+-    <base href="$FLUTTER_BASE_HREF">
++    <base href="/fly_ads_demo1/">
+ 
+     <meta charset="UTF-8">
+     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+-- 
+2.34.1.windows.1
+
