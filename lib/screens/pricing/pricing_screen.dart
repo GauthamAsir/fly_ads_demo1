@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fly_ads_demo1/constants.dart';
-import 'package:fly_ads_demo1/responsive.dart';
 import 'package:fly_ads_demo1/screens/membership_model.dart';
+import 'package:fly_ads_demo1/utils/constants.dart';
+import 'package:fly_ads_demo1/utils/responsive.dart';
 
 class PricingScreen extends StatelessWidget {
   const PricingScreen({Key? key}) : super(key: key);

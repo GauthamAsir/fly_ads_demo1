@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fly_ads_demo1/constants.dart';
-import 'package:fly_ads_demo1/responsive.dart';
+import 'package:fly_ads_demo1/utils/constants.dart';
+import 'package:fly_ads_demo1/utils/responsive.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  final String sampleShortText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus viverra ante et arcu hendrerit suscipit. Phasellus posuere erat a purus mollis eleifend. Morbi ac vestibulum nisi, ut faucibus libero. Ut id feugiat lacus. Nam blandit dui ante.';
+  final String sampleShortText =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus viverra ante et arcu hendrerit suscipit. Phasellus posuere erat a purus mollis eleifend. Morbi ac vestibulum nisi, ut faucibus libero. Ut id feugiat lacus. Nam blandit dui ante.';
 
   @override
   Widget build(BuildContext context) {

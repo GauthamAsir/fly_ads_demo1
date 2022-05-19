@@ -1,5 +1,4 @@
-import 'package:fly_ads_demo1/item_model.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:fly_ads_demo1/models/item_model.dart';
 
 class CityModel {
   String name = '', description = '', image = '';

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 const primaryColor = Color(0xFFFFC107);
@@ -22,3 +23,8 @@ Map<int, Color> swatchColor = {
 };
 
 MaterialColor appPrimaryColor = MaterialColor(0xFFFFC107, swatchColor);
+
+FirebaseFirestore db = FirebaseFirestore.instance;
+
+const String sampleImageFile =
+    'https://www.learningcontainer.com/wp-content/uploads/2020/10/Sample-BMP-File-For-Testing.png';

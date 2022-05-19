@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:fly_ads_demo1/item_model.dart';
-import 'package:fly_ads_demo1/responsive.dart';
+import 'package:fly_ads_demo1/models/item_model.dart';
 import 'package:fly_ads_demo1/screens/city_model.dart';
+import 'package:fly_ads_demo1/utils/responsive.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 

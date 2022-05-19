@@ -1,14 +1,29 @@
-import 'package:flutter/material.dart';
-import 'package:fly_ads_demo1/constants.dart';
-import 'package:fly_ads_demo1/screens/dashboard/dashboard_screen.dart';
+import 'dart:developer';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:fly_ads_demo1/screens/dashboard/dashboard_screen.dart';
+import 'package:fly_ads_demo1/utils/constants.dart';
+import 'package:fly_ads_demo1/utils/utils.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final Future<FirebaseApp> _initFirebase = Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyCwh6mQH0E97oUoT3SLlsane1YvIs42q_E",
+          authDomain: "fly-ads.firebaseapp.com",
+          projectId: "fly-ads",
+          storageBucket: "fly-ads.appspot.com",
+          messagingSenderId: "6428699133",
+          appId: "1:6428699133:web:0c6d15e49eabf82dd1d194",
+          measurementId: "G-XJXEWCF1E1"));
 
   // This widget is the root of your application.
   @override
@@ -16,18 +31,30 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: appPrimaryColor,
       ),
-      home: const Dashboard(),
+      home: FutureBuilder(
+        future: _initFirebase,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            log(snapshot.error.toString());
+            return Utils.messageWidget(context,
+                msg: (snapshot.error ?? '').toString());
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const Dashboard();
+          }
+          return const Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
