@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fly_ads_demo1/models/ad_model.dart';
+import 'package:fly_ads_demo1/screens/ad_details/ad_details.dart';
 import 'package:fly_ads_demo1/screens/dashboard/dashboard_screen.dart';
 import 'package:fly_ads_demo1/screens/publish_ad/publish_ad.dart';
 import 'package:fly_ads_demo1/utils/auth_helper.dart';
@@ -83,6 +84,7 @@ class _FlyAdsDashboardState extends State<FlyAdsDashboard> {
       body: StreamBuilder(
         stream: db
             .collection('ads')
+            .where('user_id', isEqualTo: AuthenticationHelper().user!.uid)
             .orderBy('created_on', descending: true)
             .snapshots(),
         builder: (BuildContext context,
@@ -136,69 +138,75 @@ class _FlyAdsDashboardState extends State<FlyAdsDashboard> {
               itemBuilder: (context, index) {
                 AdModel adModel = AdModel.fromSnap(snapshot.data!.docs[index]);
 
-                return Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black38,
-                            offset: Offset(-2, 2),
-                            blurRadius: 20)
-                      ]),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Flexible(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: Text(adModel.campaignName),
-                          subtitle: const Text('Campaign Name'),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Flexible(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: Text(adModel.adStatus!.name),
-                          subtitle: const Text('AD Status'),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Published On: ' +
-                            DateFormat('dd MMM yyyy, h:mm a')
-                                .format(adModel.createdOn!.toDate())
-                                .toString(),
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      Text(
-                          'Last Modified On: ' +
-                              DateFormat('dd MMM yyyy, h:mm a')
-                                  .format(adModel.lastModifiedOn!.toDate())
-                                  .toString(),
-                          style: Theme.of(context).textTheme.caption),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Responsive(
-                          mobile: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: _actionWidget(adModel),
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => AdDetails(adModel: adModel)));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black38,
+                              offset: Offset(-2, 2),
+                              blurRadius: 20)
+                        ]),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(adModel.campaignName),
+                            subtitle: const Text('Campaign Name'),
                           ),
-                          desktop: Row(
-                            children: _actionWidget(adModel),
-                          ))
-                    ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Flexible(
+                          child: ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(adModel.adStatus!.name),
+                            subtitle: const Text('AD Status'),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'Published On: ' +
+                              DateFormat('dd MMM yyyy, h:mm a')
+                                  .format(adModel.createdOn!.toDate())
+                                  .toString(),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        Text(
+                            'Last Modified On: ' +
+                                DateFormat('dd MMM yyyy, h:mm a')
+                                    .format(adModel.lastModifiedOn!.toDate())
+                                    .toString(),
+                            style: Theme.of(context).textTheme.caption),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Responsive(
+                            mobile: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: _actionWidget(adModel),
+                            ),
+                            desktop: Row(
+                              children: _actionWidget(adModel),
+                            ))
+                      ],
+                    ),
                   ),
                 );
               },

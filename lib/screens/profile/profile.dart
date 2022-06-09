@@ -15,7 +15,7 @@ class Profile extends StatelessWidget {
       child: SafeArea(
           child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: true,
+          automaticallyImplyLeading: false,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,14 +27,19 @@ class Profile extends StatelessWidget {
                   // Your drawer Icon
                   padding: EdgeInsets.zero,
                   onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Dashboard()));
+                    Navigator.of(context).pop();
+                    // Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const Dashboard()));
                   },
                   icon: const Icon(Icons.chevron_left, color: Colors.black),
                 ),
-              )
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              const Text('Profile')
             ],
           ),
         ),

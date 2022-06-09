@@ -28,3 +28,6 @@ FirebaseFirestore db = FirebaseFirestore.instance;
 
 const String sampleImageFile =
     'https://www.learningcontainer.com/wp-content/uploads/2020/10/Sample-BMP-File-For-Testing.png';
+
+const String razorPayKey = 'rzp_test_edxTb8Kkubkbb9';
+const String razorPaySecretKey = 'qV0Fj7MCPo2LhvxTsgTYK1RY';

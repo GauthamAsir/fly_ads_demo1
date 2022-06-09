@@ -161,13 +161,18 @@
 
 
 
+
 </script>
 
 <!-- Loading gif -->
 <div class="container" id="loading_indicator">
     <img class="indicator" src="./assets/loading.gif"/>
 </div>
-<script>
+
+<a class="afterglow" href="#videoPlayer" id="triggerYouTubeVideoPlayer"></a>
+<video data-skin="dark" height="540" id="youTubeVideoPlayer" width="960">
+
+    <script>
   window.onload = function () {
         setTimeout(function () {
           var loadingIndicator = document.getElementById("loading_indicator");

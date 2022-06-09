@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: appPrimaryColor,
       ),
+      // home: const TestScreen(),
       home: FutureBuilder(
         future: _initFirebase,
         builder: (context, snapshot) {

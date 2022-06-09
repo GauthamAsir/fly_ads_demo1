@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<meta content="width=device-width" name="viewport">
+<head><title>RazorPay Web Payment</title></head>
+<body>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+       var options = {
+         "key": "rzp_test_edxTb8Kkubkbb9",
+          "amount": "500000", "currency": "INR",
+          "name": "Fly ADs",
+          "description": "Test Transaction",
+          "image": "https://example.com/your_logo",
+          "handler": function (response){
+             window.parent.postMessage("SUCCESS","*");      //2
+             print(response.razorpay_payment_id);
+             print(response.razorpay_order_id);
+             print(response.razorpay_signature)
+          },
+          "prefill": {
+             "name": "Gautham",
+             "email": "gauthamasir@gmail.com",
+             "contact": "9999999999"
+           },
+           "notes": {
+             "address": "Fly ADs"
+          },
+          "theme": {
+             "color": "#FFC107"
+          },
+          "modal": {
+            "ondismiss": function(){
+               window.parent.postMessage("MODAL_CLOSED","*");   //3
+            }
+          }
+       };
+
+       var rzp1 = new Razorpay(options);
+       window.onload = function(e){  //1
+          rzp1.open();
+          e.preventDefault();
+       }
+
+
+</script>
+</body>
+</html>

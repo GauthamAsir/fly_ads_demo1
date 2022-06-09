@@ -14,7 +14,7 @@
       This is a placeholder for base href that will be replaced by the value of
       the `--base-href` argument provided to `flutter build`.
     -->
-    <base href="/fly_ads_demo1/">
+    <base href="/">
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -88,7 +88,7 @@
      application. For more information, see:
      https://developers.google.com/web/fundamentals/primers/service-workers -->
 <script>
-    var serviceWorkerVersion = '15662546';
+    var serviceWorkerVersion = '1170018409';
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
@@ -161,13 +161,18 @@
 
 
 
+
 </script>
 
 <!-- Loading gif -->
 <div class="container" id="loading_indicator">
     <img class="indicator" src="./assets/loading.gif"/>
 </div>
-<script>
+
+<a class="afterglow" href="#videoPlayer" id="triggerYouTubeVideoPlayer"></a>
+<video data-skin="dark" height="540" id="youTubeVideoPlayer" width="960">
+
+    <script>
   window.onload = function () {
         setTimeout(function () {
           var loadingIndicator = document.getElementById("loading_indicator");

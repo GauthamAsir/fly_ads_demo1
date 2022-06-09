@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fly_ads_demo1/models/ad_model.dart';
@@ -9,8 +11,7 @@ class FirstPhasePublishAD extends StatefulWidget {
   final List<AreaModel> areas;
   final Function phaseCompleted;
 
-  const FirstPhasePublishAD(
-      {Key? key, required this.areas, required this.phaseCompleted})
+  const FirstPhasePublishAD({Key? key, required this.areas, required this.phaseCompleted})
       : super(key: key);
 
   @override
@@ -87,72 +88,72 @@ class _FirstPhasePublishADState extends State<FirstPhasePublishAD> {
           children: [
             Expanded(
                 child: InkWell(
-              onTap: () async {
-                final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: startDate ?? DateTime.now(),
-                  firstDate: startDate ?? DateTime.now(),
-                  lastDate: DateTime((startDate ?? DateTime.now()).year + 1),
-                );
+                  onTap: () async {
+                    final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: startDate ?? DateTime.now(),
+                      firstDate: startDate ?? DateTime.now(),
+                      lastDate: DateTime((startDate ?? DateTime.now()).year + 1),
+                    );
 
-                if (picked != null) {
-                  startDateController.text =
-                      DateFormat('dd-MM-yyyy').format(picked);
-                  setState(() {
-                    startDate = picked;
-                  });
-                }
-              },
-              child: TextField(
-                controller: startDateController,
-                enabled: false,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.date_range_rounded),
-                  labelText: 'Select Start Date',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: appPrimaryColor.shade900),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(6.0),
+                    if (picked != null) {
+                      startDateController.text =
+                          DateFormat('dd-MM-yyyy').format(picked);
+                      setState(() {
+                        startDate = picked;
+                      });
+                    }
+                  },
+                  child: TextField(
+                    controller: startDateController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.date_range_rounded),
+                      labelText: 'Select Start Date',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: appPrimaryColor.shade900),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(6.0),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            )),
+                )),
             const SizedBox(
               width: 20,
             ),
             Expanded(
                 child: InkWell(
-              onTap: () async {
-                final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: (endDate ?? startDate) ?? DateTime.now(),
-                  firstDate: startDate ?? DateTime.now(),
-                  lastDate: DateTime((startDate ?? DateTime.now()).year + 1),
-                );
-                if (picked != null) {
-                  endDateController.text =
-                      DateFormat('dd-MM-yyyy').format(picked);
-                  setState(() {
-                    endDate = picked;
-                  });
-                }
-              },
-              child: TextField(
-                enabled: false,
-                controller: endDateController,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.date_range_rounded),
-                  labelText: 'Select End Date',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: appPrimaryColor.shade900),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(6.0),
+                  onTap: () async {
+                    final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: (endDate ?? startDate) ?? DateTime.now(),
+                      firstDate: startDate ?? DateTime.now(),
+                      lastDate: DateTime((startDate ?? DateTime.now()).year + 1),
+                    );
+                    if (picked != null) {
+                      endDateController.text =
+                          DateFormat('dd-MM-yyyy').format(picked);
+                      setState(() {
+                        endDate = picked;
+                      });
+                    }
+                  },
+                  child: TextField(
+                    enabled: false,
+                    controller: endDateController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.date_range_rounded),
+                      labelText: 'Select End Date',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: appPrimaryColor.shade900),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(6.0),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            )),
+                )),
           ],
         ),
         const SizedBox(
@@ -170,8 +171,20 @@ class _FirstPhasePublishADState extends State<FirstPhasePublishAD> {
                     ));
                     return;
                   }
+                  int screenCount = 0;
+
+                  for (var element in widget.areas) {
+                    log('HEY Count 1: ' + element.screenCount.toString());
+                    if (_selectedAreas.contains(element.id)) {
+                      log('HEY Count: ' + element.screenCount.toString());
+                      screenCount =
+                          screenCount + (element.screenCount ?? 0).toInt();
+                    }
+                  }
+
                   widget.phaseCompleted(AdModel(
                       campaignName: nameController.text,
+                      screenCount: screenCount,
                       areaIDs: _selectedAreas.map((e) => int.parse(e)).toList(),
                       startDate: Timestamp.fromDate(startDate!),
                       endDate: Timestamp.fromDate(endDate!),

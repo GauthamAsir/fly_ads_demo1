@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fly_ads_demo1/utils/constants.dart';
 import 'package:fly_ads_demo1/utils/utils.dart';
@@ -26,7 +24,6 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
       ..initialize().then((_) {
         setState(() {});
       });
-    log('DataSource: ' + _controller.dataSource);
     super.initState();
   }
 
@@ -38,22 +35,63 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.5,
-      child: Stack(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: _controller.value.isInitialized
+          ? Column(
+              children: [
+                Flexible(
+                  child: AspectRatio(
+                      aspectRatio: 3 / 2, child: VideoPlayer(_controller)),
+                ),
+                _buildControls(),
+              ],
+            )
+          : Utils.circularLoadingWidget(),
+    );
+  }
+
+  Widget _buildControls() {
+    return Container(
+      color: Colors.black26,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AnimatedContainer(duration: const Duration(milliseconds: 300)),
-          _controller.value.isInitialized
-              ? ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  child: Stack(
-                    children: [
-                      VideoPlayer(_controller),
-                      buildControls(),
-                    ],
-                  ),
-                )
-              : Utils.circularLoadingWidget()
+          InkWell(
+            onTap: () {
+              if (_controller.value.isPlaying) {
+                _controller.pause();
+              } else {
+                _controller.play();
+              }
+              setState(() {});
+            },
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              transitionBuilder: (child, anim) => ScaleTransition(
+                scale: anim,
+                child: child,
+              ),
+              child: _controller.value.isPlaying
+                  ? const Center(
+                      key: ValueKey(0),
+                      child: Icon(
+                        Icons.pause_circle_filled_rounded,
+                        color: primaryColor,
+                        size: 50,
+                      ),
+                    )
+                  : const Center(
+                      key: ValueKey(1),
+                      child: Icon(
+                        Icons.play_circle_fill_rounded,
+                        color: primaryColor,
+                        size: 50,
+                      ),
+                    ),
+            ),
+          )
         ],
       ),
     );
@@ -61,7 +99,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
 
   Widget buildControls() {
     return Center(
-      child: InkWell(
+      child: GestureDetector(
         onTap: () {
           if (_controller.value.isPlaying) {
             if (focused) {

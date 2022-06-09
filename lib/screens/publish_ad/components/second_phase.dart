@@ -2,8 +2,10 @@ import 'dart:developer';
 import 'dart:html' as html;
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fly_ads_demo1/models/ad_model.dart';
+import 'package:fly_ads_demo1/utils/auth_helper.dart';
 import 'package:fly_ads_demo1/utils/constants.dart';
 import 'package:fly_ads_demo1/utils/dashed_rect.dart';
 import 'package:fly_ads_demo1/utils/utils.dart';
@@ -37,6 +39,21 @@ class _SecondPhaseState extends State<SecondPhase> {
         html.Blob([_selectedFile!.readAsBytes()], _selectedFile!.mimeType!);
     videoUrl = html.Url.createObjectUrlFromBlob(blob);
     setState(() {});
+  }
+
+  Future<double> _getTotalPrice() async {
+    AdModel adModel = widget.adModel;
+
+    DocumentSnapshot<Map<String, dynamic>> docs =
+        await db.collection('configs').doc('pricing').get();
+
+    double adPrice = docs.data()!.isNotEmpty ? docs.data()!['ad_pricing'] : 0.0;
+
+    int days = adModel.endDate.compareTo(adModel.startDate);
+    log('Screen Count: ' + adModel.screenCount.toString());
+    log('Days: ' + days.toString());
+
+    return Future.value(adModel.screenCount * (adPrice * days));
   }
 
   @override
@@ -133,45 +150,98 @@ class _SecondPhaseState extends State<SecondPhase> {
           height: 40,
         ),
         Center(
-          child: ElevatedButton(
-            onPressed: _selectedFile == null
-                ? null
-                : () {
-                    loading = true;
+          child: Column(
+            children: [
+              FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
 
-                    AdModel adModel = widget.adModel;
-                    adModel.fileUrl = sampleImageFile;
-                    db
-                        .collection('ads')
-                        .add(adModel.toMap())
-                        .then((value) async {
-                      loading = false;
-                      setState(() {});
-                      await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                                title: const Text('Ad Uploaded to Cloud'),
-                                content: const Text(
-                                  'Your AD has been uploaded to cloud and will be published in less than a minute. Please check the status in Dashboard',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 10,
-                                ),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text('Dismiss'))
-                                ],
-                              ));
-                      Navigator.of(context).pop();
-                      return null;
-                    });
+                    return Text(
+                      snapshot.data!.toString() + 'Rs.',
+                      style: Theme.of(context).textTheme.headline6,
+                    );
                   },
-            child: Text(
-              'Make Payment & Publish',
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
+                  future: _getTotalPrice()),
+              ElevatedButton(
+                onPressed: _selectedFile == null
+                    ? null
+                    : () async {
+                        loading = true;
+
+                        AdModel adModel = widget.adModel;
+                        adModel.userId = AuthenticationHelper().user!.uid;
+                        adModel.fileUrl = sampleImageFile;
+
+                        double amount = await _getTotalPrice();
+                        adModel.price = amount;
+
+                        log('PRICE: ' + amount.toString());
+
+                        // await Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const RazorPayWeb()));
+
+                        // var authn = 'Basic ' +
+                        //     base64Encode(
+                        //         utf8.encode('$razorPayKey:$razorPaySecretKey'));
+                        //
+                        // var headers = {
+                        //   'content-type': 'application/json',
+                        //   'Authorization': authn,
+                        // };
+                        //
+                        // var data = {
+                        //   "amount": amount * 100,
+                        //   "currency": "INR",
+                        //   "receipt": "receipt#R1",
+                        //   "payment_capture": 1
+                        // };
+                        //
+                        // var res = await http.post(
+                        //     Uri.parse('https://api.razorpay.com/v1/orders'),
+                        //     headers: headers,
+                        //     body: jsonEncode(data));
+                        //
+                        // if (res.statusCode != 200) {
+                        //   log('Error: ${json.decode(res.body)['status'].toString()}');
+                        // }
+
+                        db
+                            .collection('ads')
+                            .add(adModel.toMap())
+                            .then((value) async {
+                          loading = false;
+                          setState(() {});
+                          await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: const Text('Ad Uploaded to Cloud'),
+                                    content: const Text(
+                                      'Your AD has been uploaded to cloud and will be published in less than a minute. Please check the status in Dashboard',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 10,
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Dismiss'))
+                                    ],
+                                  ));
+                          Navigator.of(context).pop();
+                          return null;
+                        });
+                      },
+                child: Text(
+                  'Make Payment & Publish',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ),
+            ],
           ),
         )
       ],

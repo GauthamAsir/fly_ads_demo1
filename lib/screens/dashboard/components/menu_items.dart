@@ -82,7 +82,7 @@ class MenuItems extends StatelessWidget {
   Widget _buildProfile(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushReplacement(
+        Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Profile()));
       },
       child: StreamBuilder<User?>(

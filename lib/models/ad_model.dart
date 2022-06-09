@@ -12,6 +12,8 @@ class AdModel {
   double price;
   Timestamp? createdOn, lastModifiedOn;
   PaymentStatus? paymentStatus;
+  int screenCount;
+  String? userId;
 
   AdModel(
       {required this.campaignName,
@@ -19,13 +21,15 @@ class AdModel {
       required this.startDate,
       required this.endDate,
       required this.price,
+      required this.screenCount,
       this.paymentStatus,
       this.fileUrl,
       this.id,
       this.adStatus,
       this.screens,
       this.createdOn,
-      this.lastModifiedOn});
+      this.lastModifiedOn,
+      this.userId});
 
   static AdModel fromSnap(QueryDocumentSnapshot data) {
     return fromMap(data: data.data()! as Map<String, dynamic>, uid: data.id);
@@ -35,6 +39,7 @@ class AdModel {
       {required Map<String, dynamic> data, required String uid}) {
     return AdModel(
         id: uid,
+        userId: data['user_id'],
         paymentStatus: _getPaymentStatus(data['payment_status'] as int),
         campaignName: data['campaign_name'],
         areaIDs: data['area_ids'],
@@ -45,7 +50,8 @@ class AdModel {
         createdOn: data['created_on'],
         lastModifiedOn: data['last_modified_on'],
         screens: data['screens'],
-        fileUrl: data['file_url']);
+        fileUrl: data['file_url'],
+        screenCount: data['screen_count'] ?? 0);
   }
 
   static ADStatus? _getAdStatus(int s) {
@@ -77,6 +83,8 @@ class AdModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': '',
+      'user_id': userId ?? '',
+      'screen_count': screenCount,
       'campaign_name': campaignName,
       'area_ids': areaIDs,
       'start_date': startDate,
@@ -94,6 +102,8 @@ class AdModel {
   String toJson() {
     return jsonEncode(<String, dynamic>{
       'id': id ?? '',
+      'user_id': userId ?? '',
+      'screen_count': screenCount,
       'campaign_name': campaignName,
       'area_ids': areaIDs,
       'start_date_m': startDate.millisecondsSinceEpoch,
@@ -113,6 +123,8 @@ class AdModel {
 
     return AdModel(
         id: data['id'],
+        userId: data['user_id'],
+        screenCount: data['screen_count'] ?? 0,
         paymentStatus: _getPaymentStatus(data['payment_status'] as int),
         campaignName: data['campaign_name'],
         areaIDs: data['area_ids'],
