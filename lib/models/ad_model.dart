@@ -14,6 +14,7 @@ class AdModel {
   PaymentStatus? paymentStatus;
   int screenCount;
   String? userId;
+  String? mimeType;
 
   AdModel(
       {required this.campaignName,
@@ -22,6 +23,7 @@ class AdModel {
       required this.endDate,
       required this.price,
       required this.screenCount,
+      this.mimeType,
       this.paymentStatus,
       this.fileUrl,
       this.id,
@@ -51,6 +53,7 @@ class AdModel {
         lastModifiedOn: data['last_modified_on'],
         screens: data['screens'],
         fileUrl: data['file_url'],
+        mimeType: data['mimeType'],
         screenCount: data['screen_count'] ?? 0);
   }
 
@@ -95,7 +98,8 @@ class AdModel {
       'created_on': Timestamp.now(),
       'last_modified_on': Timestamp.now(),
       'file_url': fileUrl ?? '',
-      'payment_status': (paymentStatus ?? PaymentStatus.Pending).index
+      'payment_status': (paymentStatus ?? PaymentStatus.Pending).index,
+      'mimeType': mimeType ?? 'video/mp4'
     };
   }
 
@@ -114,7 +118,8 @@ class AdModel {
       'created_on_m': createdOn!.millisecondsSinceEpoch,
       'last_modified_on_m': lastModifiedOn!.millisecondsSinceEpoch,
       'file_url': fileUrl ?? '',
-      'payment_status': (paymentStatus ?? PaymentStatus.Pending).index
+      'payment_status': (paymentStatus ?? PaymentStatus.Pending).index,
+      'mimeType': mimeType ?? 'video/mp4'
     });
   }
 
@@ -139,6 +144,7 @@ class AdModel {
         lastModifiedOn: Timestamp.fromMillisecondsSinceEpoch(
             data['last_modified_on_m'] ?? 000),
         screens: data['screens'],
+        mimeType: data['mimeType'],
         fileUrl: data['file_url']);
   }
 }
@@ -147,4 +153,4 @@ class AdModel {
 enum ADStatus { Created, Active, Hold, Disabled, Deleted }
 
 // ignore: constant_identifier_names
-enum PaymentStatus { Completed, Pending, Failed }
+enum PaymentStatus { Success, Pending, Failed }

@@ -35,64 +35,52 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: _controller.value.isInitialized
-          ? Column(
-              children: [
-                Flexible(
-                  child: AspectRatio(
-                      aspectRatio: 3 / 2, child: VideoPlayer(_controller)),
-                ),
-                _buildControls(),
-              ],
-            )
-          : Utils.circularLoadingWidget(),
-    );
+    return _controller.value.isInitialized
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AspectRatio(aspectRatio: 5, child: VideoPlayer(_controller)),
+              _buildControls()
+            ],
+          )
+        : Utils.circularLoadingWidget();
   }
 
   Widget _buildControls() {
-    return Container(
-      color: Colors.black26,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          InkWell(
-            onTap: () {
-              if (_controller.value.isPlaying) {
-                _controller.pause();
-              } else {
-                _controller.play();
-              }
-              setState(() {});
-            },
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              transitionBuilder: (child, anim) => ScaleTransition(
-                scale: anim,
-                child: child,
-              ),
-              child: _controller.value.isPlaying
-                  ? const Center(
-                      key: ValueKey(0),
-                      child: Icon(
-                        Icons.pause_circle_filled_rounded,
-                        color: primaryColor,
-                        size: 50,
-                      ),
-                    )
-                  : const Center(
-                      key: ValueKey(1),
-                      child: Icon(
-                        Icons.play_circle_fill_rounded,
-                        color: primaryColor,
-                        size: 50,
-                      ),
-                    ),
-            ),
-          )
-        ],
+    return Center(
+      child: InkWell(
+        onTap: () {
+          if (_controller.value.isPlaying) {
+            _controller.pause();
+          } else {
+            _controller.play();
+          }
+          setState(() {});
+        },
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          transitionBuilder: (child, anim) => ScaleTransition(
+            scale: anim,
+            child: child,
+          ),
+          child: _controller.value.isPlaying
+              ? const Center(
+                  key: ValueKey(0),
+                  child: Icon(
+                    Icons.pause_circle_filled_rounded,
+                    color: primaryColor,
+                    size: 50,
+                  ),
+                )
+              : const Center(
+                  key: ValueKey(1),
+                  child: Icon(
+                    Icons.play_circle_fill_rounded,
+                    color: primaryColor,
+                    size: 50,
+                  ),
+                ),
+        ),
       ),
     );
   }

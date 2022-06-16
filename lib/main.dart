@@ -2,9 +2,10 @@ import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fly_ads_demo1/screens/dashboard/dashboard_screen.dart';
 import 'package:fly_ads_demo1/utils/constants.dart';
 import 'package:fly_ads_demo1/utils/utils.dart';
+
+import 'screens/dashboard/dashboard_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +34,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: appPrimaryColor,
       ),
-      // home: const TestScreen(),
+      // home: PaymentHistory(
+      //     adModel: AdModel(
+      //         campaignName: 'campaignName',
+      //         areaIDs: [0],
+      //         startDate: Timestamp.now(),
+      //         endDate: Timestamp.now(),
+      //         price: 10,
+      //         screenCount: 1250)),
+
       home: FutureBuilder(
         future: _initFirebase,
         builder: (context, snapshot) {
@@ -43,6 +52,15 @@ class MyApp extends StatelessWidget {
                 msg: (snapshot.error ?? '').toString());
           }
           if (snapshot.connectionState == ConnectionState.done) {
+            // return PaymentHistory(
+            //     adModel: AdModel(
+            //         campaignName: 'campaignName',
+            //         areaIDs: [0],
+            //         startDate: Timestamp.now(),
+            //         endDate: Timestamp.now(),
+            //         price: 10,
+            //         screenCount: 1250));
+
             return const Dashboard();
           }
           return const Scaffold(

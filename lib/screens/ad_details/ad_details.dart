@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fly_ads_demo1/models/ad_model.dart';
+import 'package:fly_ads_demo1/utils/my_video_player.dart';
 
 class AdDetails extends StatefulWidget {
   final AdModel adModel;
@@ -64,6 +65,11 @@ class _AdDetailsState extends State<AdDetails> {
               title: const Text('AD Status'),
               subtitle: Text(widget.adModel.adStatus!.name),
             ),
+            widget.adModel.mimeType == 'video/mp4'
+                ? MyVideoPlayer(path: widget.adModel.fileUrl!)
+                : AspectRatio(
+                    aspectRatio: 5,
+                    child: Image.network(widget.adModel.fileUrl!))
           ],
         ),
       ),

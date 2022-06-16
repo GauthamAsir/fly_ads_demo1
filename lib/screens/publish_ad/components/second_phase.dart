@@ -1,13 +1,14 @@
 import 'dart:developer';
-import 'dart:html' as html;
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fly_ads_demo1/models/ad_model.dart';
+import 'package:fly_ads_demo1/screens/payment/payment_summary.dart';
 import 'package:fly_ads_demo1/utils/auth_helper.dart';
 import 'package:fly_ads_demo1/utils/constants.dart';
 import 'package:fly_ads_demo1/utils/dashed_rect.dart';
+import 'package:fly_ads_demo1/utils/my_video_player.dart';
 import 'package:fly_ads_demo1/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -24,22 +25,6 @@ class _SecondPhaseState extends State<SecondPhase> {
   XFile? _selectedFile;
   Uint8List? imageUrl;
   dynamic videoUrl;
-
-  bool loading = false;
-
-  void _getUrl() {
-    log('HEY');
-
-    if (_selectedFile == null) {
-      return;
-    }
-
-    log('TEST: ' + _selectedFile!.mimeType!.toString());
-    final blob =
-        html.Blob([_selectedFile!.readAsBytes()], _selectedFile!.mimeType!);
-    videoUrl = html.Url.createObjectUrlFromBlob(blob);
-    setState(() {});
-  }
 
   Future<double> _getTotalPrice() async {
     AdModel adModel = widget.adModel;
@@ -87,8 +72,9 @@ class _SecondPhaseState extends State<SecondPhase> {
                         child: _selectFileWidget('Image'),
                       ),
                     ),
-                    const SizedBox(
-                      width: 20,
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: const Text('OR'),
                     ),
                     Expanded(
                       child: InkWell(
@@ -97,7 +83,6 @@ class _SecondPhaseState extends State<SecondPhase> {
                           _selectedFile = await picker.pickVideo(
                               source: ImageSource.gallery);
                           setState(() {});
-                          _getUrl();
                           log('TYPE: ' + _selectedFile!.mimeType.toString());
                         },
                         child: _selectFileWidget('Video'),
@@ -106,14 +91,7 @@ class _SecondPhaseState extends State<SecondPhase> {
                   ],
                 )
               : _selectedFile!.mimeType == 'video/mp4'
-                  ? videoUrl == null
-                      ? Utils.circularLoadingWidget()
-                      : Center(
-                          child: Text(
-                            'Video Selected',
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                        )
+                  ? MyVideoPlayer(path: _selectedFile!.path)
                   : imageUrl == null
                       ? Utils.circularLoadingWidget()
                       : AspectRatio(
@@ -168,73 +146,22 @@ class _SecondPhaseState extends State<SecondPhase> {
                 onPressed: _selectedFile == null
                     ? null
                     : () async {
-                        loading = true;
-
-                        AdModel adModel = widget.adModel;
+                  AdModel adModel = widget.adModel;
                         adModel.userId = AuthenticationHelper().user!.uid;
                         adModel.fileUrl = sampleImageFile;
 
                         double amount = await _getTotalPrice();
                         adModel.price = amount;
+                        adModel.mimeType = _selectedFile!.mimeType;
+                        adModel.fileUrl = _selectedFile!.path;
 
                         log('PRICE: ' + amount.toString());
 
-                        // await Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const RazorPayWeb()));
-
-                        // var authn = 'Basic ' +
-                        //     base64Encode(
-                        //         utf8.encode('$razorPayKey:$razorPaySecretKey'));
-                        //
-                        // var headers = {
-                        //   'content-type': 'application/json',
-                        //   'Authorization': authn,
-                        // };
-                        //
-                        // var data = {
-                        //   "amount": amount * 100,
-                        //   "currency": "INR",
-                        //   "receipt": "receipt#R1",
-                        //   "payment_capture": 1
-                        // };
-                        //
-                        // var res = await http.post(
-                        //     Uri.parse('https://api.razorpay.com/v1/orders'),
-                        //     headers: headers,
-                        //     body: jsonEncode(data));
-                        //
-                        // if (res.statusCode != 200) {
-                        //   log('Error: ${json.decode(res.body)['status'].toString()}');
-                        // }
-
-                        db
-                            .collection('ads')
-                            .add(adModel.toMap())
-                            .then((value) async {
-                          loading = false;
-                          setState(() {});
-                          await showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    title: const Text('Ad Uploaded to Cloud'),
-                                    content: const Text(
-                                      'Your AD has been uploaded to cloud and will be published in less than a minute. Please check the status in Dashboard',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 10,
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('Dismiss'))
-                                    ],
-                                  ));
-                          Navigator.of(context).pop();
-                          return null;
-                        });
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => PaymentHistory(
+                                  adModel: adModel,
+                                  file: _selectedFile!,
+                                )));
                       },
                 child: Text(
                   'Make Payment & Publish',

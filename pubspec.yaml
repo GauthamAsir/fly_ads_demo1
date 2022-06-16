@@ -41,6 +41,7 @@ dependencies:
 
   google_maps_flutter:
 
+  firebase_storage:
   firebase_core:
   firebase_auth:
   cloud_firestore:
