@@ -290,8 +290,9 @@ class _DashboardState extends State<Dashboard> {
     switch (_currentIndex) {
       case 0:
         // return const SecondPhase(campaignName: 'TEST');
-        return const HomeScreen(
-          key: ValueKey(0),
+        return HomeScreen(
+          key: const ValueKey(0),
+          onGetStartedPressed: getStarted,
         );
       case 1:
 
@@ -300,16 +301,18 @@ class _DashboardState extends State<Dashboard> {
           key: ValueKey(1),
         );
       case 2:
-        return const PricingScreen(
-          key: ValueKey(2),
+        return PricingScreen(
+          key: const ValueKey(2),
+          onGetStartedPressed: getStarted,
         );
       // case 3:
       //   return const ContactScreen(
       //     key: ValueKey(3),
       //   );
       default:
-        return const HomeScreen(
-          key: ValueKey(0),
+        return HomeScreen(
+          key: const ValueKey(0),
+          onGetStartedPressed: getStarted,
         );
     }
   }

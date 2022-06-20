@@ -188,8 +188,10 @@ class _PaymentHistoryState extends State<PaymentHistory> {
           docId = 'Bhandup';
         } else if (element == 02) {
           docId = 'Sion';
-        } else {
+        } else if (element == 03) {
           docId = 'Matunga';
+        } else {
+          docId = 'Lower parel';
         }
 
         Map d = {
@@ -201,7 +203,9 @@ class _PaymentHistoryState extends State<PaymentHistory> {
           'payment': adModel.paymentStatus! == PaymentStatus.Success,
           'plan': 'normal',
           'uid': adModel.userId,
-          'id': value.id
+          'id': value.id,
+          'area_id': element.toString(),
+          'ad_status': ADStatus.Active.index
         };
 
         await db.collection('Mumbai').doc(docId).update({value.id: d});

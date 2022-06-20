@@ -34,7 +34,16 @@ class _SecondPhaseState extends State<SecondPhase> {
 
     double adPrice = docs.data()!.isNotEmpty ? docs.data()!['ad_pricing'] : 0.0;
 
-    int days = adModel.endDate.compareTo(adModel.startDate);
+    int days = 0;
+
+    int d = adModel.endDate.compareTo(adModel.startDate);
+
+    if (d == 0) {
+      days = 1;
+    } else {
+      days = d;
+    }
+
     log('Screen Count: ' + adModel.screenCount.toString());
     log('Days: ' + days.toString());
 

@@ -1,4 +1,34 @@
 {
+  "assets/fonts/Poppins-Bold.ttf": [
+    "assets/fonts/Poppins-Bold.ttf"
+  ],
+  "assets/fonts/Poppins-BoldItalic.ttf": [
+    "assets/fonts/Poppins-BoldItalic.ttf"
+  ],
+  "assets/fonts/Poppins-Light.ttf": [
+    "assets/fonts/Poppins-Light.ttf"
+  ],
+  "assets/fonts/Poppins-LightItalic.ttf": [
+    "assets/fonts/Poppins-LightItalic.ttf"
+  ],
+  "assets/fonts/Poppins-Medium.ttf": [
+    "assets/fonts/Poppins-Medium.ttf"
+  ],
+  "assets/fonts/Poppins-MediumItalic.ttf": [
+    "assets/fonts/Poppins-MediumItalic.ttf"
+  ],
+  "assets/fonts/Poppins-Regular.ttf": [
+    "assets/fonts/Poppins-Regular.ttf"
+  ],
+  "assets/fonts/Poppins-RegularItalic.ttf": [
+    "assets/fonts/Poppins-RegularItalic.ttf"
+  ],
+  "assets/fonts/Poppins-SemiBold.ttf": [
+    "assets/fonts/Poppins-SemiBold.ttf"
+  ],
+  "assets/fonts/Poppins-SemiBoldItalic.ttf": [
+    "assets/fonts/Poppins-SemiBoldItalic.ttf"
+  ],
   "assets/images/bg_image.jpg": [
     "assets/images/bg_image.jpg"
   ],

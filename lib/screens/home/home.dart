@@ -3,7 +3,10 @@ import 'package:fly_ads_demo1/utils/constants.dart';
 import 'package:fly_ads_demo1/utils/responsive.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final VoidCallback onGetStartedPressed;
+
+  const HomeScreen({Key? key, required this.onGetStartedPressed})
+      : super(key: key);
 
   final String sampleShortText =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus viverra ante et arcu hendrerit suscipit. Phasellus posuere erat a purus mollis eleifend. Morbi ac vestibulum nisi, ut faucibus libero. Ut id feugiat lacus. Nam blandit dui ante.';
@@ -117,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                       height: 30,
                     ),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: onGetStartedPressed,
                         style: ElevatedButton.styleFrom(
                             primary: Colors.black,
                             padding: const EdgeInsets.symmetric(

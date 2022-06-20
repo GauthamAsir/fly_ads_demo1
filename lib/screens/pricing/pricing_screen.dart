@@ -4,45 +4,48 @@ import 'package:fly_ads_demo1/utils/constants.dart';
 import 'package:fly_ads_demo1/utils/responsive.dart';
 
 class PricingScreen extends StatelessWidget {
-  const PricingScreen({Key? key}) : super(key: key);
+  final VoidCallback onGetStartedPressed;
+
+  const PricingScreen({Key? key, required this.onGetStartedPressed})
+      : super(key: key);
 
   static List<MembershipModel> membershipList = [
     MembershipModel(
-        name: 'Free',
-        duration: 3,
-        price: 0.0,
-        description: 'Sample Membership Description',
+        name: 'Basic Plan',
+        duration: 1,
+        price: 25.0,
+        description: 'Our Pricing starts from 25₹ per screen for a day',
         shortDescription: '',
         benefits: {
           'Benefit 1 Sample': true,
-          'Benefit 2 Sample': true,
-          'Benefit 3 Sample': false,
-          'Benefit 4 Sample': false,
+          // 'Benefit 2 Sample': true,
+          // 'Benefit 3 Sample': false,
+          // 'Benefit 4 Sample': false,
         }),
-    MembershipModel(
-        name: 'Standard',
-        duration: 6,
-        price: 30.0,
-        description: 'Sample Membership Description',
-        shortDescription: '',
-        benefits: {
-          'Benefit 1 Sample': true,
-          'Benefit 2 Sample': true,
-          'Benefit 3 Sample': true,
-          'Benefit 4 Sample': false,
-        }),
-    MembershipModel(
-        name: 'Premium',
-        duration: 12,
-        price: 50.0,
-        description: 'Sample Membership Description',
-        shortDescription: '',
-        benefits: {
-          'Benefit 1 Sample': true,
-          'Benefit 2 Sample': true,
-          'Benefit 3 Sample': true,
-          'Benefit 4 Sample': true
-        }),
+    // MembershipModel(
+    //     name: 'Standard',
+    //     duration: 6,
+    //     price: 30.0,
+    //     description: 'Sample Membership Description',
+    //     shortDescription: '',
+    //     benefits: {
+    //       'Benefit 1 Sample': true,
+    //       'Benefit 2 Sample': true,
+    //       'Benefit 3 Sample': true,
+    //       'Benefit 4 Sample': false,
+    //     }),
+    // MembershipModel(
+    //     name: 'Premium',
+    //     duration: 12,
+    //     price: 50.0,
+    //     description: 'Sample Membership Description',
+    //     shortDescription: '',
+    //     benefits: {
+    //       'Benefit 1 Sample': true,
+    //       'Benefit 2 Sample': true,
+    //       'Benefit 3 Sample': true,
+    //       'Benefit 4 Sample': true
+    //     }),
   ];
 
   @override
@@ -72,14 +75,20 @@ class PricingScreen extends StatelessWidget {
                                 color: Colors.black38.withOpacity(0.85),
                                 overflow: TextOverflow.ellipsis)
                             : Responsive.isTablet(context)
-                                ? Theme.of(context).textTheme.headline4!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black38.withOpacity(0.85),
-                                    overflow: TextOverflow.ellipsis)
-                                : Theme.of(context).textTheme.headline2!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black38.withOpacity(0.85),
-                                    overflow: TextOverflow.ellipsis)),
+                                ? Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black38.withOpacity(0.85),
+                                        overflow: TextOverflow.ellipsis)
+                                : Theme.of(context)
+                                    .textTheme
+                                    .headline2!
+                                    .copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black38.withOpacity(0.85),
+                                        overflow: TextOverflow.ellipsis)),
                   ),
                 ),
                 const Flexible(
@@ -176,18 +185,24 @@ class PricingScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            '\$ ',
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis
-                            ),
+                            membershipModel.price.toStringAsFixed(2),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline3!
+                                .copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    overflow: TextOverflow.ellipsis),
                           ),
                           Text(
-                            membershipModel.price.toStringAsFixed(2),
-                            style: Theme.of(context).textTheme.headline3!.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis
-                            ),
+                            '₹ ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    overflow: TextOverflow.ellipsis),
                           ),
                         ],
                       ),
@@ -196,44 +211,49 @@ class PricingScreen extends StatelessWidget {
                       ),
                       Text(
                         membershipModel.description,
+                        maxLines: 3,
                         style: Theme.of(context).textTheme.caption!.copyWith(
                             fontWeight: FontWeight.w400,
-                            fontSize: 14, overflow: TextOverflow.ellipsis,
+                            fontSize: 14,
+                            overflow: TextOverflow.ellipsis,
                             color: Colors.black),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        'Valid for ' +
-                            membershipModel.duration.toString() +
-                            ' months',
-                        style: Theme.of(context).textTheme.caption!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14, overflow: TextOverflow.ellipsis,
-                            color: Colors.black),
-                      ),
+                      // Text(
+                      //   'Valid for ' +
+                      //       membershipModel.duration.toString() +
+                      //       ' months',
+                      //   style: Theme.of(context).textTheme.caption!.copyWith(
+                      //       fontWeight: FontWeight.w400,
+                      //       fontSize: 14,
+                      //       overflow: TextOverflow.ellipsis,
+                      //       color: Colors.black),
+                      // ),
                       const SizedBox(
                         height: 20,
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: onGetStartedPressed,
                             style: ElevatedButton.styleFrom(
                                 primary: Colors.black,
-                                padding: const EdgeInsets.symmetric(vertical: 24),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 24),
                                 shape: const RoundedRectangleBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(8)))),
+                                        BorderRadius.all(Radius.circular(8)))),
                             child: Text(
                               'Get Started',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline6!
                                   .copyWith(
-                                  color: Colors.white, overflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.w600),
+                                      color: Colors.white,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontWeight: FontWeight.w600),
                             )),
                       ),
                     ],
@@ -242,7 +262,8 @@ class PricingScreen extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 38),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 38),
                 decoration: BoxDecoration(
                     color: secondaryColor.withOpacity(0.8),
                     borderRadius: const BorderRadius.only(
