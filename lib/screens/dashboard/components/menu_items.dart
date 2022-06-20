@@ -8,8 +8,13 @@ import 'package:fly_ads_demo1/utils/utils.dart';
 class MenuItems extends StatelessWidget {
   final int? selectedIndex;
   final Function onPressed;
+  final VoidCallback onLogOutPressed;
 
-  const MenuItems({Key? key, this.selectedIndex = 0, required this.onPressed})
+  const MenuItems(
+      {Key? key,
+      this.selectedIndex = 0,
+      required this.onPressed,
+      required this.onLogOutPressed})
       : super(key: key);
 
   @override
@@ -33,15 +38,15 @@ class MenuItems extends StatelessWidget {
               _button(context, index: 0, btName: 'Home', onPressed: () {
                 onPressed(0);
               }),
-              _button(context, index: 1, btName: 'Products', onPressed: () {
+              _button(context, index: 1, btName: 'Services', onPressed: () {
                 onPressed(1);
               }),
               _button(context, index: 2, btName: 'Pricing', onPressed: () {
                 onPressed(2);
               }),
-              _button(context, index: 3, btName: 'Contact', onPressed: () {
-                onPressed(3);
-              }),
+              // _button(context, index: 3, btName: 'Contact', onPressed: () {
+              //   onPressed(3);
+              // }),
               const SizedBox(
                 height: 10,
               ),
@@ -64,15 +69,15 @@ class MenuItems extends StatelessWidget {
           _button(context, index: 0, btName: 'Home', onPressed: () {
             onPressed(0);
           }),
-          _button(context, index: 1, btName: 'Products', onPressed: () {
+          _button(context, index: 1, btName: 'Services', onPressed: () {
             onPressed(1);
           }),
           _button(context, index: 2, btName: 'Pricing', onPressed: () {
             onPressed(2);
           }),
-          _button(context, index: 3, btName: 'Contact', onPressed: () {
-            onPressed(3);
-          }),
+          // _button(context, index: 3, btName: 'Contact', onPressed: () {
+          //   onPressed(3);
+          // }),
           _buildProfile(context),
         ],
       ),
@@ -188,16 +193,44 @@ class MenuItems extends StatelessWidget {
       {required VoidCallback onPressed, bool publishAD = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: ElevatedButton(
-          style: ElevatedButton.styleFrom(),
-          onPressed: onPressed,
-          child: Text(
-            publishAD ? 'Publish AD' : 'Get Started',
-            style: Theme.of(context)
-                .textTheme
-                .subtitle2!
-                .copyWith(fontWeight: FontWeight.w600),
-          )),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(),
+              onPressed: onPressed,
+              child: Text(
+                publishAD ? 'Publish AD' : 'Get Started',
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2!
+                    .copyWith(fontWeight: FontWeight.w600),
+              )),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: publishAD
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(),
+                          onPressed: onLogOutPressed,
+                          child: Text(
+                            'Log Out',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2!
+                                .copyWith(fontWeight: FontWeight.w600),
+                          )),
+                    ],
+                  )
+                : Container(),
+          )
+        ],
+      ),
     );
   }
 
@@ -249,7 +282,7 @@ class MenuItems extends StatelessWidget {
     return Row(
       children: [
         const Icon(
-          Icons.electric_bike_rounded,
+          Icons.flight_rounded,
           size: 40,
         ),
         const SizedBox(
@@ -260,7 +293,7 @@ class MenuItems extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: Text('Fly Ads',
+              child: Text('FlyAds',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle2!

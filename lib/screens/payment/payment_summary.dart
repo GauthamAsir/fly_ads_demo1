@@ -178,10 +178,38 @@ class _PaymentHistoryState extends State<PaymentHistory> {
     }
 
     adModel.fileUrl = await _downloadLink(task.snapshot.ref);
+    adModel.adStatus = ADStatus.Active;
 
     db.collection('ads').add(adModel.toMap()).then((value) async {
+      for (var element in adModel.areaIDs) {
+        String docId = '';
+
+        if (element == 01) {
+          docId = 'Bhandup';
+        } else if (element == 02) {
+          docId = 'Sion';
+        } else {
+          docId = 'Matunga';
+        }
+
+        Map d = {
+          'admin_status': 'active',
+          'campaign_name': adModel.campaignName,
+          'start_date': adModel.startDate.toDate().toString(),
+          'end_date': adModel.endDate.toDate().toString(),
+          'file_url': adModel.fileUrl,
+          'payment': adModel.paymentStatus! == PaymentStatus.Success,
+          'plan': 'normal',
+          'uid': adModel.userId,
+          'id': value.id
+        };
+
+        await db.collection('Mumbai').doc(docId).update({value.id: d});
+      }
+
       loading = false;
       setState(() {});
+
       await showDialog(
           context: context,
           builder: (context) => AlertDialog(

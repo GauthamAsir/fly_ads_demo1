@@ -37,7 +37,7 @@ dependencies:
 
   map:
   latlng:
-  cached_network_image:
+  cached_network_image: ^3.2.1
 
   google_maps_flutter:
 

@@ -44,19 +44,27 @@ class HomeScreen extends StatelessWidget {
                           ? MediaQuery.of(context).size.width / 2.6
                           : MediaQuery.of(context).size.width,
                       child: Responsive(
-                        desktop: Text(
-                          'Communicate.\nCollaborate. Create.',
-                          style: Theme.of(context).textTheme.headline3!.copyWith(
-                              fontWeight: FontWeight.w400, color: Colors.black),
+                        desktop: SelectableText(
+                          'Think outside the \nBanner',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3!
+                              .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black),
                         ),
-                        tablet: Text(
-                          'Communicate.\nCollaborate. Create.',
-                          style: Theme.of(context).textTheme.headline3!.copyWith(
-                              fontWeight: FontWeight.w400, color: Colors.black),
+                        tablet: SelectableText(
+                          'Think outside the \nBanner',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3!
+                              .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black),
                         ),
                         mobileLarge: FittedBox(
-                          child: Text(
-                            'Communicate.\nCollaborate. Create.',
+                          child: SelectableText(
+                            'Think outside the \nBanner',
                             style: Theme.of(context)
                                 .textTheme
                                 .headline3!
@@ -66,8 +74,8 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         mobile: FittedBox(
-                          child: Text(
-                            'Communicate.\nCollaborate. Create.',
+                          child: SelectableText(
+                            'Think outside the \nBanner',
                             style: Theme.of(context)
                                 .textTheme
                                 .headline3!
@@ -85,13 +93,24 @@ class HomeScreen extends StatelessWidget {
                       width: Responsive.isTablet(context)
                           ? MediaQuery.of(context).size.width / 2.6
                           : MediaQuery.of(context).size.width,
-                      child: Text(
-                        'Advertise your Brand on Digital Screen across cities!\nStart your Advertisement at 25₹',
-                        style: Responsive.isDesktop(context)
-                            ? Theme.of(context).textTheme.subtitle1!.copyWith(
-                                fontWeight: FontWeight.w400, color: Colors.black)
-                            : Theme.of(context).textTheme.subtitle2!.copyWith(
-                                fontWeight: FontWeight.w400, color: Colors.black),
+                      child: RichText(
+                        text: TextSpan(
+                          children: const [
+                            TextSpan(
+                                text:
+                                    'Advertise your Brand on Digital Screen across cities!\nStart your Advertisement at '),
+                            TextSpan(
+                                text: '25₹',
+                                style: TextStyle(fontWeight: FontWeight.w900))
+                          ],
+                          style: Responsive.isDesktop(context)
+                              ? Theme.of(context).textTheme.subtitle1!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black)
+                              : Theme.of(context).textTheme.subtitle2!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -105,8 +124,12 @@ class HomeScreen extends StatelessWidget {
                                 vertical: 20, horizontal: 16)),
                         child: Text(
                           'Get Started',
-                          style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                              color: Colors.white, fontWeight: FontWeight.w600),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
                         )),
                     const SizedBox(
                       height: 40,
@@ -161,7 +184,8 @@ class HomeScreen extends StatelessWidget {
                         )),
                   ],
                 ),
-                if (Responsive.isDesktop(context) || Responsive.isTablet(context))
+                if (Responsive.isDesktop(context) ||
+                    Responsive.isTablet(context))
                   Align(
                       alignment: Alignment.centerRight,
                       child: Image.asset(
@@ -181,7 +205,8 @@ class HomeScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(
                 horizontal: Responsive.isDesktop(context)
                     ? MediaQuery.of(context).size.width / 10
-                    : 32, vertical: MediaQuery.of(context).size.height / 10),
+                    : 32,
+                vertical: MediaQuery.of(context).size.height / 10),
             decoration: BoxDecoration(color: appPrimaryColor),
             child: Responsive(
               mobile: Column(
@@ -218,24 +243,26 @@ class HomeScreen extends StatelessWidget {
                     child: Text(
                       'With the Right Software, Great Things Can Happen',
                       maxLines: 10,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4!
-                          .copyWith(fontWeight: FontWeight.w500, color: Colors.black,
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
                           overflow: TextOverflow.ellipsis),
                     ),
                   ),
-                  const SizedBox(width: 20,),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 3,
                     child: Text(
                       sampleShortText,
                       maxLines: 10,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2!
-                          .copyWith(fontWeight: FontWeight.w500, color: Colors.black,
-                          overflow: TextOverflow.ellipsis, letterSpacing: 1.5, height: 1.5),
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          overflow: TextOverflow.ellipsis,
+                          letterSpacing: 1.5,
+                          height: 1.5),
                     ),
                   )
                 ],

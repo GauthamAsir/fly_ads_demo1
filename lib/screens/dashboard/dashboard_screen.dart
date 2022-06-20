@@ -1,7 +1,7 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:fly_ads_demo1/screens/contact/contact_screen.dart';
 import 'package:fly_ads_demo1/screens/dashboard/components/menu_items.dart';
 import 'package:fly_ads_demo1/screens/fly_dashboard/fly_ads_dashboard.dart';
 import 'package:fly_ads_demo1/screens/home/home.dart';
@@ -26,6 +26,8 @@ class _DashboardState extends State<Dashboard> {
   bool showAuthWidget = false, showLogin = true;
 
   List titleNames = ['Home', 'Service', 'Pricing', 'Contact'];
+
+  math.Random random = math.Random();
 
   AuthenticationHelper authenticationHelper = AuthenticationHelper();
 
@@ -72,7 +74,11 @@ class _DashboardState extends State<Dashboard> {
           drawer: Responsive.isDesktop(context)
               ? null
               : MenuItems(
-            onPressed: (int index) {
+              onLogOutPressed: () async {
+                await AuthenticationHelper().signOut();
+                setState(() {});
+              },
+              onPressed: (int index) {
                 log('message: ' + index.toString());
 
                 if (index == 4) {
@@ -83,15 +89,15 @@ class _DashboardState extends State<Dashboard> {
 
                 if (index == 5) {
                   Navigator.of(context).pop();
-                  getStarted();
-                  return;
-                }
+                getStarted();
+                return;
+              }
 
-                setState(() {
-                  _currentIndex = index;
-                });
-                Navigator.of(context).pop();
-              },
+              setState(() {
+                _currentIndex = index;
+              });
+              Navigator.of(context).pop();
+            },
             selectedIndex: _currentIndex,
           ),
           body: Container(
@@ -106,6 +112,10 @@ class _DashboardState extends State<Dashboard> {
                     child: Container(
                       color: _currentIndex == 2 ? secondaryColor : null,
                       child: MenuItems(
+                        onLogOutPressed: () async {
+                          await AuthenticationHelper().signOut();
+                          setState(() {});
+                        },
                         onPressed: (int index) {
                           log('message: ' + index.toString());
 
@@ -293,10 +303,10 @@ class _DashboardState extends State<Dashboard> {
         return const PricingScreen(
           key: ValueKey(2),
         );
-      case 3:
-        return const ContactScreen(
-          key: ValueKey(3),
-        );
+      // case 3:
+      //   return const ContactScreen(
+      //     key: ValueKey(3),
+      //   );
       default:
         return const HomeScreen(
           key: ValueKey(0),

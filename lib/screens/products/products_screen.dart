@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
@@ -10,7 +11,9 @@ import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
 class ProductsScreen extends StatefulWidget {
-  const ProductsScreen({Key? key}) : super(key: key);
+  const ProductsScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ProductsScreen> createState() => _ProductsScreenState();
@@ -26,57 +29,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
   final controller =
       MapController(location: LatLng(19.0411261, 72.8592133), zoom: 14);
 
-  final data = [
-    CityModel(
-      name: 'Mumbai',
-      description: 'Mumbai City',
-      image: testImage,
-      items: [
-        ItemModel(
-            name: 'Test 1',
-            description: 'Test 1 Description ' + sampleShortText,
-            image: testImage,
-            latLng: LatLng(19.0411261, 72.8592133),
-            activeFrom: DateTime.now(),
-            isActive: true),
-        ItemModel(
-            name: 'Test 2',
-            description: 'Test 2 Description ' + sampleShortText,
-            image: testImage,
-            latLng: LatLng(19.0435702, 72.860769),
-            activeFrom: DateTime.now(),
-            isActive: true),
-        ItemModel(
-            name: 'Test 3',
-            description: 'Test 3 Description ' + sampleShortText,
-            image: testImage,
-            latLng: LatLng(19.0408015, 72.8642666),
-            activeFrom: DateTime.now(),
-            isActive: true),
-        ItemModel(
-            name: 'Test 4',
-            description: 'Test 4 Description ' + sampleShortText,
-            image: testImage,
-            latLng: LatLng(19.0408624, 72.8619921),
-            activeFrom: DateTime.now(),
-            isActive: true),
-        ItemModel(
-            name: 'Test 5',
-            description: 'Test 5 Description ' + sampleShortText,
-            image: testImage,
-            latLng: LatLng(19.0404161, 72.8613913),
-            activeFrom: DateTime.now(),
-            isActive: true),
-        ItemModel(
-            name: 'Test 6',
-            description: 'Test 6 Description ' + sampleShortText,
-            image: testImage,
-            latLng: LatLng(19.0406088, 72.8592991),
-            activeFrom: DateTime.now(),
-            isActive: true),
-      ],
-    ),
-  ];
+  math.Random random = math.Random();
+
+  List data = [];
+
+  bool loading = true;
 
   void _gotoDefault() {
     controller.center = LatLng(19.0411261, 72.8592133);
@@ -127,7 +84,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             controller.zoom = 16;
             setState(() {});
 
-            if(!Responsive.isDesktop(context)) {
+            if (!Responsive.isDesktop(context)) {
               showDetailDialog();
             }
           },
@@ -155,6 +112,67 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ));
   }
 
+  LatLng g() {
+    double x0 = 19.0411261;
+    double y0 = 72.8592133;
+
+    // double bc = 111000f;
+
+    // Convert radius from meters to degrees
+    double radiusInDegrees = 0.03;
+
+    double u = random.nextDouble();
+    double v = random.nextDouble();
+    double w = radiusInDegrees * math.sqrt(u);
+    double t = 2 * math.pi * v;
+    double x = w * math.cos(t);
+    double y = w * math.sin(t);
+
+    // Adjust the x-coordinate for the shrinking of the east-west distances
+    double new_x = x / math.cos(y0);
+
+    double foundLatitude = new_x + x0;
+    double foundLongitude = y + y0;
+    // LatLng randomLatLng = LatLng(foundLatitude, foundLongitude);
+    // randomPoints.add(randomLatLng);
+    // Location l1 = new Location("");
+    // l1.setLatitude(randomLatLng.latitude);
+    // l1.setLongitude(randomLatLng.longitude);
+    return LatLng(foundLatitude, foundLongitude);
+  }
+
+  @override
+  void initState() {
+    List<ItemModel> items = [];
+
+    for (int i = 0; i <= 100; i++) {
+      // double randomLat = loc1 + random.nextDouble() * loc1 * 2;
+      // double randomLng = loc2 + random.nextDouble() * loc2 * 2;
+
+      // Convert radius from meters to degrees
+      // double radiusInDegrees = 150 / 111000f;
+
+      items.add(
+        ItemModel(
+            name: 'Test $i',
+            description: 'Test $i Description ' + sampleShortText,
+            image: testImage,
+            latLng: g(),
+            activeFrom: DateTime.now(),
+            isActive: true),
+      );
+    }
+    data.clear();
+    data.add(CityModel(
+        name: 'Mumbai',
+        description: 'Mumbai City',
+        image: testImage,
+        items: items));
+    loading = false;
+    setState(() {});
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -164,13 +182,22 @@ class _ProductsScreenState extends State<ProductsScreen> {
         desktop: Row(
           children: [
             Expanded(
-              child: detailCard(context),
-            ),
+                child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : detailCard(context),
+            )),
             Expanded(
               flex: 2,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: mapWidget(),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  child: loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : mapWidget(),
+                ),
               ),
             )
           ],
